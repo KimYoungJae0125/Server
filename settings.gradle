@@ -1,0 +1,7 @@
+rootProject.name = 'multimodule'
+include ('server1', 'server2')
+
+rootProject.children.each { project ->
+    println(project.name)
+    project.setBuildFileName("build-${project.name}.gradle")
+}

@@ -1,0 +1,19 @@
+plugins {
+}
+
+repositories {
+    mavenCentral()
+}
+
+subprojects {
+
+    apply plugin: 'java'
+
+    group = 'com'
+    version = '0.0.1-SNAPSHOT'
+
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    }
+}
