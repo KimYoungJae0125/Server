@@ -1,0 +1,50 @@
+FROM ubuntu:20.04
+
+USER root
+
+# default Setting
+RUN apt-get update
+RUN apt upgrade -y
+RUN apt-get install -y openssh-server
+RUN apt install vim -y
+RUN apt install net-tools -y
+RUN apt install curl -y
+
+# fuser ( use by port kill)
+RUN apt install psmisc
+
+# Docker Setting
+RUN curl -fsSL https://get.docker.com -o get-docker.sh
+RUN sh get-docker.sh -y
+RUN apt install docker-compose -y
+
+# JDK Setting
+RUN apt-get install software-properties-common -y
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 0xB1998361219BD9C9
+RUN curl -O https://cdn.azul.com/zulu/bin/zulu-repo_1.0.0-3_all.deb
+RUN apt-get install ./zulu-repo_1.0.0-3_all.deb
+RUN apt-add-repository 'deb http://repos.azulsystems.com/ubuntu stable main'
+RUN apt-get install zulu17-jdk -y
+
+# NginX
+RUN apt-get install nginx -y
+
+RUN mkdir /var/run/sshd
+
+#set password
+RUN echo 'root:root' |chpasswd
+
+#replace sshd_config
+RUN sed -ri 's/^#?PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_config
+RUN sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config
+
+#make .ssh
+RUN mkdir /root/.ssh
+
+#make deploy folder
+RUN mkdir -p /home/ubuntu/deploy
+
+RUN apt-get clean && \
+rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# docker build -t {image_name} .

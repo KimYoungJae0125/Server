@@ -1,0 +1,25 @@
+version: "3.7"
+
+services:
+  server1:
+    build:
+      context: ./images
+      dockerfile: Dockerfile-ubuntu
+    container_name: server1
+    ports:
+      - "800:80"
+      - "2200:22"
+    restart: on-failure
+    stdin_open: true
+    tty: true
+  server2:
+    build:
+      context: ./images
+      dockerfile: Dockerfile-ubuntu
+    container_name: server2
+    ports:
+      - "801:80"
+      - "2201:22"
+    restart: on-failure
+    stdin_open: true
+    tty: true
