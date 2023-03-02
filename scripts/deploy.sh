@@ -64,5 +64,8 @@ echo "> curl -s ${HEALTH_CHECK_URL}"
 sleep 5
 
 health_check ${HEALTH_CHECK_URL}
+echo "set \$service_url http://127.0.0.1:$START_PORT;" > /etc/nginx/conf.d/service-url.inc
+
+service nginx restart
 
 fuser -k $KILL_PORT/tcp
